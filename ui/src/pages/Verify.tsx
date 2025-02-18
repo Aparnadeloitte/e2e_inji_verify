@@ -9,7 +9,8 @@ import { useVerifyFlowSelector } from "../redux/features/verification/verificati
 import { getVpRequest, resetVpRequest, setSelectCredential, setSelectedClaims } from "../redux/features/verify/vpVerificationState";
 import { useAppDispatch } from "../redux/hooks";
 
-export function Verify() {
+export function 
+Verify() {
   const { t } = useTranslation("Verify");
   const txnId = useVerifyFlowSelector((state) => state.txnId);
   const openSelection = useVerifyFlowSelector((state) => state.SelectionPanel);

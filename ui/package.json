@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.1",
+    "@playwright/test": "^1.50.1",
     "@types/jest": "^29.5.12",
     "@types/redux-mock-store": "^1.0.6",
     "add": "^2.0.6",
