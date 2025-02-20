@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubpat')
+        IMAGE_NAME = 'raparna154/sample'
+    }
+    stages {
+        stage('Checkout') {
+            withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                // Replace with your repository URL
+                git url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git', branch: 'test'
+            }
+        }
+        //stage('Build with Maven') {
+            //steps {
+                // Use the Maven tool configured in Jenkins
+                //withMaven(maven: 'Maven3') {
+                   // sh 'mvn -U -B package'
+               // }
+           // }
+       // }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}", "-f verify-service/Dockerfile .")
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        //stage('Run Docker Container') {
+            //steps {
+                //sh """
+                //docker run -d -p 3000:8000 --env-file ./.env --name inji-verify-service-dev ${IMAGE_NAME}:${BUILD_NUMBER}
+                //"""
+            //}
+        //}
+    }
+    post {
+        cleanup {
+            sh 'docker rmi ${IMAGE_NAME}:${BUILD_NUMBER}'
+        }
+    }
+}
+
