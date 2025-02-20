@@ -71,6 +71,7 @@ pipeline {
         stage('Update Kubernetes Manifests') {
             steps {
                 script {
+                  withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                     // Clone the Git repository containing Kubernetes manifests
                     dir('inji-infra-azure') {
                     git branch: MANIFEST_REPO_BRANCH,
@@ -86,14 +87,14 @@ pipeline {
                     sh """
                     git add -A
                     git commit -m "Update image to $DOCKER_IMAGE_BASE:$BUILD_NUMBER"
-                    git push origin $MANIFEST_REPO_BRANCH
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git $MANIFEST_REPO_BRANCH
                     """
                 }
             }
         }
     }
 }
-
+ }
     }
 
 
