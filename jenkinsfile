@@ -22,12 +22,14 @@ pipeline {
         //}
         stage('Build with Maven') {
             steps {
-                Use the Maven tool configured in Jenkins
-                withMaven(maven: 'Maven3') {
-                    sh 'mvn -U -B package'
-               }
-           }
-       }
+                script {
+                    // Run Maven build
+                    withMaven(maven: 'Maven3') {
+                        sh 'mvn -U -B clean package'
+                    }
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
