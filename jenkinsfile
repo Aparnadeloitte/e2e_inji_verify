@@ -2,7 +2,7 @@ pipeline {
     agent any
  
     environment {
-        #GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
+        GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
         GIT_BRANCH = 'test' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO_BRANCH = 'test'
