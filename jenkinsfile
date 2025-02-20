@@ -2,9 +2,10 @@ pipeline {
     agent any
  
     environment {
-        GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
+        #GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
         GIT_BRANCH = 'test' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
+        MANIFEST_REPO_BRANCH = 'test'
     }
  
     stages {
@@ -66,8 +67,36 @@ pipeline {
                 }
             }
         }
+
+        stage('Update Kubernetes Manifests') {
+            steps {
+                script {
+                    // Clone the Git repository containing Kubernetes manifests
+                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                        git clone https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git
+                        cd inji-verify
+                        git checkout $MANIFEST_REPO_BRANCH
+                        """
+                    }
+
+                    // Update the image tag in the deployment manifest
+                    sh """
+                    sed -i 's|image: .*$|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' inji-verify/values.yaml
+                    """
+
+                    // Commit and push changes
+                    sh """
+                    cd inji-verify
+                    git add values.yaml
+                    git commit -m "Update image to $DOCKER_IMAGE"
+                    git push origin $MANIFEST_REPO_BRANCH
+                    """
+                }
+            }
+        }
     }
- 
+
     post {
         success {
             echo "Pipeline completed successfully! Pushed Docker Image: ${DOCKER_IMAGE}"
