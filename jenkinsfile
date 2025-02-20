@@ -18,9 +18,6 @@ pipeline {
                     git branch: 'test',
                     url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git',
                     credentialsId: 'githubpat2'
-                    sh '''
-                    cd e2e_inji_verify
-                    '''
             }
         }
 
