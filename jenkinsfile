@@ -72,32 +72,60 @@ pipeline {
             steps {
                 script {
                     // Clone the Git repository containing Kubernetes manifests
-                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                        sh """
-                        rm -rf inji-infra-azure
-                        git clone https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git
-                        cd inji-verify
-                        pwd
-                        ls
-                        git checkout $MANIFEST_REPO_BRANCH
-                        """
-                    }
-
+                    dir('inji-infra-azure') {
+                    git branch: MANIFEST_REPO_BRANCH,
+                    credentialsId: 'githubpat2',
+                    url: 'https://github.com/Aparnadeloitte/inji-infra-azure.git'
+                    // Navigate to the 'inji-verify' directory
+                    dir('inji-infra-azure/inji-verify') {
                     // Update the image tag in the deployment manifest
                     sh """
                     sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' values.yaml
                     """
-
                     // Commit and push changes
                     sh """
                     git add values.yaml
-                    git commit -m "Update image to $DOCKER_IMAGE"
+                    git commit -m "Update image to $DOCKER_IMAGE_BASE:$BUILD_NUMBER"
                     git push origin $MANIFEST_REPO_BRANCH
                     """
                 }
             }
         }
     }
+}
+
+    }
+
+
+        //stage('Update Kubernetes Manifests') {
+            //steps {
+                //script {
+                    // Clone the Git repository containing Kubernetes manifests
+                    //withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        //sh """
+                        //rm -rf inji-infra-azure
+                        //git clone https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git
+                        //cd inji-verify
+                        //pwd
+                        //ls
+                        //git checkout $MANIFEST_REPO_BRANCH
+                        //"""
+                    //}
+
+                    // Update the image tag in the deployment manifest
+                    //sh """
+                    //sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' values.yaml
+                    //"""
+                    // Commit and push changes
+                    //sh """
+                    //git add values.yaml
+                    //git commit -m "Update image to $DOCKER_IMAGE"
+                    //git push origin $MANIFEST_REPO_BRANCH
+                    //"""
+                //}
+            //}
+        //}
+    //}
 
     post {
         success {
