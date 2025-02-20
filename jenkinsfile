@@ -77,14 +77,14 @@ pipeline {
                     credentialsId: 'githubpat2',
                     url: 'https://github.com/Aparnadeloitte/inji-infra-azure.git'
                     // Navigate to the 'inji-verify' directory
-                    dir('inji-infra-azure/inji-verify') {
+                    dir('inji-verify') {
                     // Update the image tag in the deployment manifest
                     sh """
                     sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' values.yaml
                     """
                     // Commit and push changes
                     sh """
-                    git add values.yaml
+                    git add -A
                     git commit -m "Update image to $DOCKER_IMAGE_BASE:$BUILD_NUMBER"
                     git push origin $MANIFEST_REPO_BRANCH
                     """
