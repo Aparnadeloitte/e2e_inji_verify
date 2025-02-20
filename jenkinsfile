@@ -5,7 +5,7 @@ pipeline {
         GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
         GIT_BRANCH = 'test' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
-        MANIFEST_REPO_BRANCH = 'test'
+        MANIFEST_REPO_BRANCH = 'main'
     }
  
     stages {
@@ -82,7 +82,7 @@ pipeline {
 
                     // Update the image tag in the deployment manifest
                     sh """
-                    sed -i 's|image: .*$|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' inji-verify/values.yaml
+                    sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' inji-verify/values.yaml
                     """
 
                     // Commit and push changes
