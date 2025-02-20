@@ -74,6 +74,7 @@ pipeline {
                     // Clone the Git repository containing Kubernetes manifests
                     withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                         sh """
+                        rm -rf inji-infra-azure
                         git clone https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git
                         cd inji-verify
                         git checkout $MANIFEST_REPO_BRANCH
