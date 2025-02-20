@@ -77,13 +77,15 @@ pipeline {
                         rm -rf inji-infra-azure
                         git clone https://$GIT_USER:$GIT_TOKEN@github.com/Aparnadeloitte/inji-infra-azure.git
                         cd inji-verify
+                        pwd
+                        ls
                         git checkout $MANIFEST_REPO_BRANCH
                         """
                     }
 
                     // Update the image tag in the deployment manifest
                     sh """
-                    sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' inji-verify/values.yaml
+                    sed -i 's|image: .*|image: $DOCKER_IMAGE_BASE:$BUILD_NUMBER|' values.yaml
                     """
 
                     // Commit and push changes
