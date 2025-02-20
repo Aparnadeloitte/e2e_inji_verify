@@ -87,7 +87,6 @@ pipeline {
 
                     // Commit and push changes
                     sh """
-                    cd inji-verify
                     git add values.yaml
                     git commit -m "Update image to $DOCKER_IMAGE"
                     git push origin $MANIFEST_REPO_BRANCH
