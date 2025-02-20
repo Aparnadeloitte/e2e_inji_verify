@@ -5,12 +5,21 @@ pipeline {
         IMAGE_NAME = 'raparna154/sample'
     }
     stages {
+
         stage('Checkout') {
-            withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                // Replace with your repository URL
-                git url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git', branch: 'test'
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git',
+                    credentialsId: 'githubpat2'
             }
         }
+
+        //stage('Checkout') {
+            //withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                // Replace with your repository URL
+                //git url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git', branch: 'test'
+            //}
+        //}
         //stage('Build with Maven') {
             //steps {
                 // Use the Maven tool configured in Jenkins
