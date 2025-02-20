@@ -20,14 +20,14 @@ pipeline {
                 //git url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git', branch: 'test'
             //}
         //}
-        //stage('Build with Maven') {
-            //steps {
-                // Use the Maven tool configured in Jenkins
-                //withMaven(maven: 'Maven3') {
-                   // sh 'mvn -U -B package'
-               // }
-           // }
-       // }
+        stage('Build with Maven') {
+            steps {
+                Use the Maven tool configured in Jenkins
+                withMaven(maven: 'Maven3') {
+                    sh 'mvn -U -B package'
+               }
+           }
+       }
         stage('Build Docker Image') {
             steps {
                 script {
