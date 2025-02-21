@@ -10,7 +10,7 @@ pipeline {
     }
  
     stages {
-        stage('Clean Workspace') {
+        stage('Clean Workspace.') {
             steps {
                 sh 'rm -rf e2e_inji_verify || true'
             }
