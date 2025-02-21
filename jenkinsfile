@@ -6,7 +6,7 @@ pipeline {
         GIT_BRANCH = 'test' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
-        MANIFEST_REPO_BRANCH = 'main'
+        MANIFEST_BRANCH = 'main'
     }
  
     stages {
