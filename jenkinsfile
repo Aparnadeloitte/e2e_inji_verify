@@ -103,10 +103,10 @@ pipeline {
         
     post {
         success {
-            echo "Pipeline completed successfully! Pushed Docker Image: ${DOCKER_IMAGE}"
+            echo "Pipeline completed successfully! updated image: ${env.DOCKER_IMAGE} in manifest repo."
         }
         failure {
-            echo "Pipeline failed! Last attempted Docker Image Tag: ${DOCKER_IMAGE}"
+            echo "Failed! Last attempted Docker Image Tag: ${env.DOCKER_IMAGE}"
         }
     }
 }
