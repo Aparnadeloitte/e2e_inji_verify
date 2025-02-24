@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     dir('e2e_inji_verify/ui') {
-                        docker.build(${env.DOCKER_IMAGE})
+                        docker.build("${env.DOCKER_IMAGE}")
                     }
                 }
             }
