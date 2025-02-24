@@ -33,7 +33,7 @@ pipeline {
         stage('Get Commit Hash') {
             steps {
                 script {
-                    COMMIT_HASH = sh(
+                   env.COMMIT_HASH = sh(
                         script: "cd e2e_inji_verify && git rev-parse --short HEAD",
                         returnStdout: true
                     ).trim()
