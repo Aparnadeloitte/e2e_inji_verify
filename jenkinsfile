@@ -2,8 +2,7 @@ pipeline {
     agent any
  
     environment {
-        GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
-        GIT_BRANCH = 'test' 
+       
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
         MANIFEST_BRANCH = 'main'
@@ -15,10 +14,9 @@ pipeline {
         stage('Get Commit Hash') {
             steps {
                 script {
-                    COMMIT_HASH = sh(
-                        script: "cd e2e_inji_verify && git rev-parse --short HEAD",
-                        returnStdout: true
-                    ).trim()
+                    
+                    COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+
                     env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.COMMIT_HASH}-${env.BUILD_NUMBER}"
                     echo "Docker Image Tag: ${env.DOCKER_IMAGE}"
                 }
