@@ -10,25 +10,7 @@ pipeline {
     }
  
     stages {
-        stage('Clean Workspace.') {
-            steps {
-                sh 'rm -rf e2e_inji_verify || true'
-            }
-        }
- 
-        stage('Clone Repository') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                        sh """
-                        git clone https://$GIT_USER:$GIT_TOKEN@github.com/pkumarmshetty/e2e_inji_verify.git
-                        cd e2e_inji_verify
-                        git checkout $GIT_BRANCH
-                        """
-                    }
-                }
-            }
-        }
+       
  
         stage('Get Commit Hash') {
             steps {
