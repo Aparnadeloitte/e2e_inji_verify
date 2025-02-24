@@ -37,7 +37,8 @@ pipeline {
                         script: "cd e2e_inji_verify && git rev-parse --short HEAD",
                         returnStdout: true
                     ).trim()
-                    env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.COMMIT_HASH}-${env.BUILD_NUMBER}"
+                    env.IMAGE_TAG = "${env.COMMIT_HASH}-${env.BUILD_NUMBER}"
+                    env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.IMAGE_TAG}"
                     echo "Docker Image Tag: ${env.DOCKER_IMAGE}"
                 }
             }
@@ -86,7 +87,7 @@ pipeline {
                         # Force update the image tag
                         yq eval '.image.repository = "raparna154/inji-verify-service" |
                        .image.tag = "'"${env.COMMIT_HASH}-${env.BUILD_NUMBER}"'"
-                        ' -i values.yaml
+                        ' -i inji-verify/values.yaml
 
                         # Debugging: Show after update
                         echo "After update:"
