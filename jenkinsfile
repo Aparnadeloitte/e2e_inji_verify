@@ -1,65 +1,115 @@
 pipeline {
     agent any
+ 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhubpat')
-        IMAGE_NAME = 'raparna154/inji-verify-service:latest'
+        GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
         GIT_BRANCH = 'test' 
+        DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
+        MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
+        MANIFEST_BRANCH = 'main'
     }
+ 
     stages {
-
-        stage('Clean Workspace') {
+        stage('Clean Workspace.') {
             steps {
                 sh 'rm -rf e2e_inji_verify || true'
             }
         }
-
-        stage('Checkout') {
-            steps {
-                    git branch: 'test',
-                    url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git',
-                    credentialsId: 'githubpat2'
-            }
-        }
-
-        //stage('Checkout') {
-            //withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                // Replace with your repository URL
-                //git url: 'https://github.com/pkumarmshetty/e2e_inji_verify.git', branch: 'test'
-            //}
-        //}
-         //stage('Build with Maven') {
-           // steps {
-                // Run Maven build using shell command
-                //sh 'mvn -U -B clean package'
-            //}
-        //}
-        stage('Build Docker Image') {
+ 
+        stage('Clone Repository') {
             steps {
                 script {
-                    dir('e2e_inji_verify/ui') {
+                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                         sh """
-                        docker build -t $DOCKER_IMAGE .
+                        git clone https://$GIT_USER:$GIT_TOKEN@github.com/pkumarmshetty/e2e_inji_verify.git
+                        cd e2e_inji_verify
+                        git checkout $GIT_BRANCH
+                        git pull
                         """
                     }
                 }
             }
         }
+ 
+        stage('Get Commit Hash') {
+            steps {
+                script {
+                    COMMIT_HASH = sh(
+                        script: "cd e2e_inji_verify && git rev-parse --short HEAD",
+                        returnStdout: true
+                    ).trim()
+                    env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.COMMIT_HASH}-${env.BUILD_NUMBER}"
+                    echo "Docker Image Tag: ${env.DOCKER_IMAGE}"
+                }
+            }
+        }
+ 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dir('e2e_inji_verify/ui') {
+                        sh """
+                        docker build -t ${env.DOCKER_IMAGE} .
+                        """
+                    }
+                }
+            }
+        }
+ 
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push()
+                    withCredentials([usernamePassword(credentialsId: 'dockerhubpat', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh """
+                        echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+                        docker push ${env.DOCKER_IMAGE}
+                        docker logout
+                        """
+                    }
+                }
+            }
+        }
+
+    stage('Update Manifest Repo') {
+             steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                        rm -rf Inji-infra-azure
+                        # Clone manifest repo
+                        git clone https://${GIT_USER}:${GIT_TOKEN}@github.com/Aparnadeloitte/Inji-infra-azure.git
+                        cd Inji-infra-azure
+                        git checkout ${MANIFEST_BRANCH}
+
+                        echo "Before update:"
+                        cat inji-verify/values.yaml || true
+
+                        # Force update the image tag
+                        yq eval '.image.repository = "raparna154/inji-web-service" |
+                       .image.tag = "'"${env.COMMIT_HASH}-${env.BUILD_NUMBER}"'"
+                        ' -i inji-verify/values.yaml
+
+                        # Debugging: Show after update
+                        echo "After update:"
+                        cat inji-verify/values.yaml
+
+                        # Commit & Push changes if there are any
+                        git add inji-verify/values.yaml
+                        git commit -m "Auto-update image tag to ${env.DOCKER_IMAGE}" || echo "No changes to commit"
+                        git push origin ${MANIFEST_BRANCH}
+                        """
                     }
                 }
             }
         }
     }
+        
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo "Pipeline completed successfully! updated image: ${env.DOCKER_IMAGE} in manifest repo."
         }
         failure {
-            echo 'Pipeline failed!'
+            echo "Failed! Last attempted Docker Image Tag: ${env.DOCKER_IMAGE}"
         }
     }
 }
