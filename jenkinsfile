@@ -31,7 +31,7 @@ pipeline {
             }
         }
  
-        stage('Get Commit Hash') {
+        stage('Get Commit Hash.') {
             steps {
                 script {
                     COMMIT_HASH = sh(
