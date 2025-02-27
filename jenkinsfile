@@ -78,7 +78,7 @@ pipeline {
                         echo "Before update:"
                         cat inji-verify/values.yaml || true
 
-                         # Force update the image tag
+                         # Force update the image tag.
                         yq eval '.image.repository = "raparna154/inji-verify-service" |
                        .image.tag = "'"${env.GIT_COMMIT}-${env.BUILD_NUMBER}"'"
                         ' -i inji-verify/values.yaml
