@@ -2,7 +2,7 @@ pipeline {
     agent any
  
     environment {
-       
+        BRANCH_NAME = 'dev'
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
         MANIFEST_BRANCH = 'main'
@@ -14,6 +14,8 @@ pipeline {
         stage('Get Commit Hash.') {
             steps {
                 script {
+                    sh 'git fetch --all'
+                    sh 'git reset --hard origin/${BRANCH_NAME}'
                     env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
                     echo "Docker Image Tag: ${env.DOCKER_IMAGE}"
                 }
