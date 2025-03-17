@@ -77,7 +77,7 @@ module.exports = {
         "default_theme-gradient":
           "linear-gradient(90deg, #004C92 0%, #FF0009 100%)",
         "default_theme-lighter-gradient":
-          "linear-gradient(90deg, rgba(255, 83, 0, 0.08) 0%, rgba(251, 81, 3, 0.08) 16%, rgba(240, 76, 15, 0.08) 31%, rgba(222, 67, 34, 0.08) 46%, rgba(197, 54, 60, 0.08) 61%, rgba(164, 38, 95, 0.08) 75%, rgba(124, 19, 137, 0.08) 90%, rgba(91, 3, 173, 0.08) 100%)",
+"linear-gradient(90deg, rgba(0, 76, 146, 0.08) 0%, rgba(255, 0, 9, 0.08) 100%)",
         "purple_theme-gradient":
           "linear-gradient(90deg, #5a31ee 0%, #8f69ec 100%)",
         "purple_theme-lighter-gradient":
