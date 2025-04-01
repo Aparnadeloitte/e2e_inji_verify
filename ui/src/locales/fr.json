@@ -10,7 +10,7 @@
   "Header": {
     "heading": "Vérifier les informations d'identification ",
     "headingHighlight": "en toute simplicité !",
-    "description": "Vérifiez sans effort les informations d'identification avec Inji Verify ! "
+    "description": "Vérifiez sans effort les informations d'identification avec T&T Verify ! "
   },
   "Tab": {
     "upload": "Télécharger le code QR",
@@ -143,7 +143,7 @@
     "invalidParams": "Paramètres invalides !!"
   },
   "CopyRight": {
-    "content": "2024 © MOSIP - Tous droits réservés."
+    "content": "2025 © T&T - Tous droits réservés."
   },
   "CameraAccessDenied": {
     "header": "Accès à la caméra refusé",

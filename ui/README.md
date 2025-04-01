@@ -1,4 +1,4 @@
-# Inji Verify
+# T&T Verify
 
 Injiverify is a web interface to verify the validity of the QR / credential using a browser from smartphone / tablet / computer. A user should be able to do primariliy 4 key actions - Scan, Validate, Fetch, Display.
 
@@ -40,13 +40,13 @@ Prerequisites:
   - [Install as plugin to docker command](https://docs.docker.com/compose/install/#scenario-two-install-the-compose-plugin)
   - [Install the Compose standalone](https://docs.docker.com/compose/install/#scenario-three-install-the-compose-standalone)
 
-  Once installed, use Docker compose option below to run the Inji Verify application for a quick demo.
+  Once installed, use Docker compose option below to run the t & T Verify application for a quick demo.
 
 ---
 
 # Configuration:
 
-The configuration to the Inji Verify application can be passed using the .env file which is present inside the **inji-verify** folder.
+The configuration to the T&T Verify application can be passed using the .env file which is present inside the **inji-verify** folder.
 
 It accepts INTERNET_CONNECTIVITY_CHECK_ENDPOINT and INTERNET_CONNECTIVITY_CHECK_TIMEOUT variables at this moment. These are used to check the availability of the internet connection and can be configured when required. The default values are added in the .env file.
 
@@ -119,7 +119,7 @@ Once started, the application is accessible at http://localhost:3000.
 
 # Demo Setup:
 
-This section helps to quickly get started with a demo of the Inji Verify application
+This section helps to quickly get started with a demo of the T&T Verify application
 
 Once the repository is cloned, move into the inji-verify repository directory.
 Choose one of the branches that are currently available for the demo:

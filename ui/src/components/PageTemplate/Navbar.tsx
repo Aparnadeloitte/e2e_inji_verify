@@ -55,14 +55,14 @@ const MobileDropDownMenu = ({ showMenu, setShowMenu }: { showMenu: boolean; setS
                      className="absolute right-0 top-[68px] w-[100vw] bg-white rounded-md shadow-lg p-3 ring-1 ring-black ring-opacity-5 font-bold text-[14px] z-[1000]">
                     <a id="home-button" href={Pages.Home} className="block px-1 py-2 text-sm text-gray-700 hover:bg-gray-100">{t("home")}</a>
                     <a id="verify-credentials-button" href={Pages.Home} className={`block px-1 py-2 font-bold text-sm bg-${window._env_.DEFAULT_THEME}-gradient bg-clip-text text-transparent`}>{t('verifyCredentials')}</a>
-                    <div className="relative">
+                    {/* <div className="relative">
                         <button id="submenu-button"
                                 className="inline-flex items-center w-full text-left px-1 py-3 text-sm text-gray-700 hover:bg-gray-100"
                                 onClick={() => setShowSubMenu(show => !show)}
                         >{t('help')} <MdArrowForwardIos className={`mx-1.5 ${showSubMenu ? "rotate-90" : ""}`}/>
                         </button>
                         {showSubMenu && (<SubMenu/>)}
-                    </div>
+                    </div> */}
                 </div>
             )
         }
@@ -92,14 +92,14 @@ const DesktopMenu = () => {
                         {t("verifyCredentials")}
                     </a>
                 </li>
-                <li className="relative">
+                {/* <li className="relative">
                     <button id="help-button"
                        onClick={() => setShowHelp(show=>!show)}
                        className="inline-flex items-center cursor-pointer py-2 rounded text-black">
                         {t("help")} <MdExpandLess className={`mx-1.5 ${showHelp ? "" : "rotate-180"}`}/>
                     </button>
                     {showHelp && (<SubMenu/>)}
-                </li>
+                </li> */}
             </ul>
         </div>
     );
