@@ -75,7 +75,27 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
 
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            {orderedDetails.map((label) => (
+            {
+                                 Object.keys(vc.credentialSubject)
+                                    .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
+                                    .map((key, index) => (
+                                        <div  key={key}>
+                                            <p id={convertToId(key)} className="font-normal text-[11px] break-all">
+                                                {convertToTitleCase(key)}
+                                            </p>
+                                            <p 
+                                           id={`${convertToId(key)}-value`}
+                                             className="font-bold text-smallTextSize break-all"
+                                            
+                                            >
+                                            {getDisplayValue((vc.credentialSubject as Record<string, any>)[key])}
+                                            </p>
+                                        </div>
+                                        
+                                    ))
+                                    
+                            }
+            {/* {orderedDetails.map((label) => (
               <div key={label.key}>
                 <p
                   id={convertToId(label.key)}
@@ -90,7 +110,7 @@ const DisplayVcDetailsModal: React.FC<ModalProps> = ({
                   {getDisplayValue(label.value)}
                 </p>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
 

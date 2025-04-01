@@ -35,7 +35,27 @@ function DisplayVcDetailView({
         {vc ? (
           <div className="relative">
           <div className="grid relative">
-            {orderedDetails.map((label, index) => (
+          {
+                     Object.keys(vc.credentialSubject)
+                        .filter(key => key?.toLowerCase() !== "id" && key?.toLowerCase() !== "type")
+                        .map((key, index) => (
+                            <div className={`py-2.5 px-1 xs:col-end-13 ${(index % 2 === 0) ? "lg:col-start-1 lg:col-end-6" : "lg:col-start-8 lg:col-end-13"}`} key={key}>
+                                <p id={convertToId(key)} className="font-normal text-[11px] break-all">
+                                    {convertToTitleCase(key)}
+                                </p>
+                                <p 
+                               id={`${convertToId(key)}-value`}
+                                 className="font-bold text-smallTextSize break-all"
+                                
+                                >
+                                {getDisplayValue((vc.credentialSubject as Record<string, any>)[key])}
+                                </p>
+                            </div>
+                            
+                        ))
+                        
+                }
+            {/* {orderedDetails.map((label, index) => (
               <div
                 className={`py-2.5 px-1 xs:col-end-13 ${
                   index % 2 === 0
@@ -57,7 +77,7 @@ function DisplayVcDetailView({
                   {getDisplayValue(label.value)}
                 </p>
               </div>
-            ))}
+            ))} */}
           </div>
 
           <div className="absolute inset-x-0 bottom-0 flex justify-end lg:justify-start px-4">
