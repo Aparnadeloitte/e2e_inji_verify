@@ -2,34 +2,14 @@ pipeline {
     agent any
  
     environment {
-        GIT_REPO = 'https://github.com/pkumarmshetty/e2e_inji_verify.git'
-        GIT_BRANCH = 'test' 
+        GIT_REPO = 'https://github.com/Aparnadeloitte/e2e_inji_verify.git'
+        GIT_BRANCH = 'main' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
-        MANIFEST_BRANCH = 'main'
+        MANIFEST_BRANCH = 'prod'
     }
  
     stages {
-        stage('Clean Workspace.') {
-            steps {
-                sh 'rm -rf e2e_inji_verify || true'
-            }
-        }
- 
-        stage('Clone Repository') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                        sh """
-                        git clone https://$GIT_USER:$GIT_TOKEN@github.com/pkumarmshetty/e2e_inji_verify.git
-                        cd e2e_inji_verify
-                        git checkout $GIT_BRANCH
-                        git pull
-                        """
-                    }
-                }
-            }
-        }
  
         stage('Get Commit Hash.') {
             steps {
