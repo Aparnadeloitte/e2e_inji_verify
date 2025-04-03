@@ -2,8 +2,6 @@ pipeline {
     agent any
  
     environment {
-        GIT_REPO = 'https://github.com/Aparnadeloitte/e2e_inji_verify.git'
-        GIT_BRANCH = 'test' 
         DOCKER_IMAGE_BASE = 'raparna154/inji-verify-service'
         MANIFEST_REPO = 'https://github.com/Aparnadeloitte/Inji-infra-azure.git'
         MANIFEST_BRANCH = 'main'
@@ -16,7 +14,7 @@ pipeline {
             }
         }
  
-        stage('Clone Repository') {
+        stage('Get Commit Hash.') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
@@ -47,10 +45,29 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dir('e2e_inji_verify/ui') {
-                        sh """
-                        docker build -t ${env.DOCKER_IMAGE} .
-                        """
+                    dir('ui') {
+                        docker.build("${env.DOCKER_IMAGE}")
+                    }
+                }
+            }
+        }
+       stage('Scan Docker Image') {
+            steps {
+                script {
+                    // Run Trivy to scan the Docker image
+                    def trivyOutput = sh(script: "trivy image ${env.DOCKER_IMAGE}", returnStdout: true).trim()
+
+                    // Display Trivy scan results
+                    println trivyOutput
+
+                    // Check if vulnerabilities were found
+                    if (trivyOutput.contains("Total: 0")) {
+                        echo "No vulnerabilities found in the Docker image."
+                    } else {
+                        echo "Vulnerabilities found in the Docker image."
+                        // You can take further actions here based on your requirements
+                        // For example, failing the build if vulnerabilities are found
+                        //error "Vulnerabilities found in the Docker image."
                     }
                 }
             }
