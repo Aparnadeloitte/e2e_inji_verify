@@ -44,10 +44,10 @@ pipeline {
                         // You can take further actions here based on your requirements
                         // For example, failing the build if vulnerabilities are found
                         //error "Vulnerabilities found in the Docker image."
-                    }
-                }
-            }
-        }
+                    //}
+                //}
+           // }
+        //}
  
         stage('Push Docker Image') {
             steps {
