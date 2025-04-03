@@ -5,7 +5,6 @@ import VerificationProgressTracker from "../components/Home/VerificationProgress
 
 
 function Home() {
-
   return (
     <PageTemplate>
       <div className="grid grid-cols-12">
