@@ -22,32 +22,13 @@ pipeline {
             steps {
                 script {
                     dir('ui') {
-                        docker.build("${env.DOCKER_IMAGE}")
+                        sh """
+                        docker build -t ${env.DOCKER_IMAGE} .
+                        """
                     }
                 }
             }
         }
-       //stage('Scan Docker Image') {
-            //steps {
-                //script {
-                    // Run Trivy to scan the Docker image
-                    //def trivyOutput = sh(script: "trivy image ${env.DOCKER_IMAGE}", returnStdout: true).trim()
-
-                    // Display Trivy scan results
-                    //println trivyOutput
-
-                    // Check if vulnerabilities were found
-                    //if (trivyOutput.contains("Total: 0")) {
-                        echo "No vulnerabilities found in the Docker image."
-                    //} //else {
-                        //echo "Vulnerabilities found in the Docker image."
-                        // You can take further actions here based on your requirements
-                        // For example, failing the build if vulnerabilities are found
-                        //error "Vulnerabilities found in the Docker image."
-                    //}
-                //}
-           // }
-        //}
  
         stage('Push Docker Image') {
             steps {
@@ -79,7 +60,7 @@ pipeline {
 
                         # Force update the image tag
                         yq eval '.image.repository = "raparna154/inji-verify-service" |
-                       .image.tag = "'"${env.COMMIT_HASH}-${env.BUILD_NUMBER}"'"
+                       .image.tag = "'"${env.GIT_COMMIT}-${env.BUILD_NUMBER}"'"
                         ' -i inji-verify/values.yaml
 
                         # Debugging: Show after update
