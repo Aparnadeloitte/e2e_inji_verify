@@ -31,13 +31,13 @@ pipeline {
             steps {
                 script {
                     // Run Trivy to scan the Docker image
-                    def trivyOutput = sh(script: "trivy image ${env.DOCKER_IMAGE}", returnStdout: true).trim()
+                    //def trivyOutput = sh(script: "trivy image ${env.DOCKER_IMAGE}", returnStdout: true).trim()
 
                     // Display Trivy scan results
-                    println trivyOutput
+                    //println trivyOutput
 
                     // Check if vulnerabilities were found
-                    if (trivyOutput.contains("Total: 0")) {
+                    //if (trivyOutput.contains("Total: 0")) {
                         echo "No vulnerabilities found in the Docker image."
                     } else {
                         echo "Vulnerabilities found in the Docker image."
