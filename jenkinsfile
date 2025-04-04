@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-    stage('Update Manifest Repo') {
+    stage('Update Manifest Repo.') {
              steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'githubpat2', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
