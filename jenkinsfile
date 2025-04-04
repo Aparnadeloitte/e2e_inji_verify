@@ -9,7 +9,7 @@ pipeline {
  
     stages {
  
-        stage('Get Commit Hash.') {
+        stage('Get Commit Hash') {
             steps {
                 script {
                     env.DOCKER_IMAGE = "${DOCKER_IMAGE_BASE}:${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
